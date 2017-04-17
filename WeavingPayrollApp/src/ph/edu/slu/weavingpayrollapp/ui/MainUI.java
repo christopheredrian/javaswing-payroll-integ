@@ -5,6 +5,9 @@
  */
 package ph.edu.slu.weavingpayrollapp.ui;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+
 /**
  *
  * @author chris
@@ -40,9 +43,6 @@ public class MainUI extends javax.swing.JFrame {
         reActivateBtn = new javax.swing.JButton();
         employeeSummaryBtn = new javax.swing.JButton();
         payrollBtn = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         checkHoursBtn = new javax.swing.JButton();
         activateAdminBtn = new javax.swing.JButton();
@@ -127,32 +127,6 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 95, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 72, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("tab1", jPanel2);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 95, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 72, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("tab2", jPanel3);
-
         checkHoursBtn.setText("Check My Hours");
 
         activateAdminBtn.setText("Activate Admin");
@@ -200,10 +174,6 @@ public class MainUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45))
-                    .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(247, 247, 247)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, clockOutBtnLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(adminPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -220,9 +190,7 @@ public class MainUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
+                        .addGap(14, 318, Short.MAX_VALUE)
                         .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -253,8 +221,52 @@ public class MainUI extends javax.swing.JFrame {
 
     private void activateAdminBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activateAdminBtnActionPerformed
         // TODO: Condition here
-        if (true) {
-            adminPane.setVisible(true);
+//        String input = JOptionPane.showInputDialog(this, "Enter Password", "Authenticate", JOptionPane.INFORMATION_MESSAGE);
+//        String[] options = new String[]{"OK", "Cancel"};
+//        int option = JOptionPane.showOptionDialog(null, "Password", "The title",
+//                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+//                null, options, options[1]);
+//
+//        if (option == 0) {
+//            if (input.equals("password")) {
+//                adminPane.setVisible(true);
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Wrong Password!");
+//            }
+//        }
+// panel
+//        JPanel panel = new JPanel();
+//        JLabel label = new JLabel("Enter a password:");
+//        JPasswordField pass = new JPasswordField(10);
+//        panel.add(label);
+//        panel.add(pass);
+//        String[] options = new String[]{"OK", "Cancel"};
+//        int option = JOptionPane.showOptionDialog(null, panel, "The title",
+//                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+//                null, options, options[1]);
+//        if (option == 0) // pressing OK button
+//        {
+//            char[] password = pass.getPassword();
+//            String passwordStr = new String(password);
+//            if (passwordStr.equals("password")) {
+//                adminPane.setVisible(true);
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Wrong Password!");
+//            }
+//            System.out.println("Your password is: " + new String(password));
+//        }
+        JPasswordField pf = new JPasswordField();
+        int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (okCxl == JOptionPane.OK_OPTION) {
+            String passwordStr = new String(pf.getPassword());
+            if (passwordStr.equals("password")) {
+                adminPane.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Wrong Password!");
+            }
+            String password = new String(pf.getPassword());
+            System.err.println("You entered: " + password);
         }
     }//GEN-LAST:event_activateAdminBtnActionPerformed
 
@@ -269,7 +281,7 @@ public class MainUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -304,10 +316,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton editBtn;
     private javax.swing.JButton employeeSummaryBtn;
     private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton payrollBtn;
     private javax.swing.JButton reActivateBtn;
     private javax.swing.JTable table;
