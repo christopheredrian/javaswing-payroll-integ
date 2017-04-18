@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="611" max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="602" max="32767" attributes="0"/>
+          </Group>
+          <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="12" max="32767" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="367" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="jTable1">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="15" rowCount="29">
+                <Column editable="true" title="Employee ID" type="java.lang.Integer">
+                  <Data value="10111"/>
+                  <Data value="10211"/>
+                  <Data value="10212"/>
+                  <Data value="10213"/>
+                  <Data value="10214"/>
+                  <Data value="10215"/>
+                  <Data value="10216"/>
+                  <Data value="10217"/>
+                  <Data value="10311"/>
+                  <Data value="10312"/>
+                  <Data value="10411"/>
+                  <Data value="10412"/>
+                  <Data value="10413"/>
+                  <Data value="10414"/>
+                  <Data value="10415"/>
+                  <Data value="10416"/>
+                  <Data value="10417"/>
+                  <Data value="10418"/>
+                  <Data value="10421"/>
+                  <Data value="10422"/>
+                  <Data value="10423"/>
+                  <Data value="10424"/>
+                  <Data value="10425"/>
+                  <Data value="10426"/>
+                  <Data value="10427"/>
+                  <Data value="10428"/>
+                  <Data value="10511"/>
+                  <Data value="10512"/>
+                  <Data value="10513"/>
+                </Column>
+                <Column editable="true" title="Employee Name" type="java.lang.String">
+                  <Data value="Locaben, Camille"/>
+                  <Data value="Balilit,Marian T."/>
+                  <Data value="Lucahi,Preciouslyn B."/>
+                  <Data value="Sacedon, Mary Jhoe M."/>
+                  <Data value="Dirige, Renzo Lanz O."/>
+                  <Data value="avelino,michelle f"/>
+                  <Data value="Uy, John Michael V"/>
+                  <Data value="PABITO, Haydee Mae B."/>
+                  <Data value="Reyes, Judylyn U."/>
+                  <Data value="LANDAGORA, MARK ANDY B. "/>
+                  <Data value="Dirige, Renzo Lanz O."/>
+                  <Data value="LUMIUAN, RHEA B."/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="Company Position" type="java.lang.String">
+                  <Data value="General Manager"/>
+                  <Data value="Head Supervisor"/>
+                  <Data value="Head Supervisor"/>
+                  <Data value="Accountant"/>
+                  <Data value="Acountant"/>
+                  <Data value="Clerk"/>
+                  <Data value="Clerk"/>
+                  <Data value="Clerk"/>
+                  <Data value="Production Supervisor"/>
+                  <Data value="Production Supervisor"/>
+                  <Data value="Production Operator"/>
+                  <Data value="Production Operator"/>
+                  <Data value="Production Operator"/>
+                  <Data value="Production Operator"/>
+                  <Data value="Production Operator"/>
+                  <Data value="Production Operator"/>
+                  <Data value="Production Operator"/>
+                  <Data value="Production Operator"/>
+                  <Data value="Tailor"/>
+                  <Data value="Tailor"/>
+                  <Data value="Tailor"/>
+                  <Data value="Tailor"/>
+                  <Data value="Tailor"/>
+                  <Data value="Tailor"/>
+                  <Data value="Tailor"/>
+                  <Data value="Tailor"/>
+                  <Data value="Maintenance Man"/>
+                  <Data value="Machine Maintenance Man"/>
+                  <Data value="Machine Maintenance Man"/>
+                </Column>
+                <Column editable="true" title="Rate Per Day" type="java.lang.Double">
+                  <Data value="1200.0"/>
+                  <Data value="900.0"/>
+                  <Data value="900.0"/>
+                  <Data value="700.0"/>
+                  <Data value="700.0"/>
+                  <Data value="400.0"/>
+                  <Data value="400.0"/>
+                  <Data value="400.0"/>
+                  <Data value="400.0"/>
+                  <Data value="400.0"/>
+                  <Data value="320.0"/>
+                  <Data value="320.0"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="Basic Monthly Rate" type="java.lang.Double">
+                  <Data value="31200.0"/>
+                  <Data value="23400.0"/>
+                  <Data value="23400.0"/>
+                  <Data value="18200.0"/>
+                  <Data value="18200.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="8320.0"/>
+                  <Data value="8320.0"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="Days Worked" type="java.lang.Double">
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="26.0"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="Basic Monthly Pay" type="java.lang.Double">
+                  <Data value="31200.0"/>
+                  <Data value="23400.0"/>
+                  <Data value="23400.0"/>
+                  <Data value="18200.0"/>
+                  <Data value="18200.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="400.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="10400.0"/>
+                  <Data value="8320.0"/>
+                  <Data value="8320.0"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="Overtime Pay" type="java.lang.Double">
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="4790.4"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="Gross Pay" type="java.lang.Double">
+                  <Data value="35990.0"/>
+                  <Data value="28190.0"/>
+                  <Data value="28190.0"/>
+                  <Data value="22990.0"/>
+                  <Data value="22990.0"/>
+                  <Data value="15119.0"/>
+                  <Data value="15119.0"/>
+                  <Data value="15119.0"/>
+                  <Data value="15119.0"/>
+                  <Data value="15119.0"/>
+                  <Data value="13110.0"/>
+                  <Data value="13110.0"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="Withholding Tax" type="java.lang.Double">
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="4039.84"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="SSS Contribution" type="java.lang.Double">
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="581.3"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="PAG-IBIG Contribution" type="java.lang.Integer">
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="100"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="PHIL- HEALTH Contribution" type="java.lang.Double">
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="337.5"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="TOTAL Deduction" type="java.lang.Double">
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="5058.64"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+                <Column editable="true" title="NET PAY" type="java.lang.Double">
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="25587.69"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                  <Data value="null"/>
+                </Column>
+              </Table>
+            </Property>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
+            </Property>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="PAYROLL"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>
