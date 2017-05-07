@@ -46,9 +46,13 @@ public class MainUI extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         checkHoursBtn = new javax.swing.JButton();
         activateAdminBtn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        clockOutBtn.setBackground(new java.awt.Color(34, 204, 99));
+
+        table.setBackground(new java.awt.Color(77, 77, 51));
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -57,7 +61,7 @@ public class MainUI extends javax.swing.JFrame {
                 {null, null}
             },
             new String [] {
-                "id", "Name"
+                "ID", "NAME"
             }
         ));
         tableScrollPane.setViewportView(table);
@@ -65,74 +69,116 @@ public class MainUI extends javax.swing.JFrame {
             table.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        clockInBtn.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         clockInBtn.setText("Clock In");
+        clockInBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clockInBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clockInBtnActionPerformed(evt);
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jButton2.setText("Clock Out");
+        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
+        adminPane.setBackground(new java.awt.Color(77, 77, 51));
+
+        addBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         addBtn.setText("Add Employee");
+        addBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        editBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         editBtn.setText("Edit Employee");
+        editBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBtnActionPerformed(evt);
+            }
+        });
 
+        deActivateBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         deActivateBtn.setText("De-Activate Employee");
+        deActivateBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        reActivateBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         reActivateBtn.setText("Re-Activate Employee");
+        reActivateBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        employeeSummaryBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         employeeSummaryBtn.setText("Employee Summary");
+        employeeSummaryBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        employeeSummaryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employeeSummaryBtnActionPerformed(evt);
+            }
+        });
 
+        payrollBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         payrollBtn.setText("Payroll");
+        payrollBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout adminPaneLayout = new javax.swing.GroupLayout(adminPane);
         adminPane.setLayout(adminPaneLayout);
         adminPaneLayout.setHorizontalGroup(
             adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(adminPaneLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(reActivateBtn)
+                    .addComponent(deActivateBtn))
+                .addGap(37, 37, 37)
                 .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(editBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(adminPaneLayout.createSequentialGroup()
-                        .addComponent(deActivateBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(employeeSummaryBtn))
-                    .addGroup(adminPaneLayout.createSequentialGroup()
-                        .addComponent(reActivateBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(payrollBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(payrollBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(employeeSummaryBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
         adminPaneLayout.setVerticalGroup(
             adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(adminPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addBtn)
                     .addComponent(deActivateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(employeeSummaryBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(reActivateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(payrollBtn))
-                .addContainerGap())
+                    .addComponent(payrollBtn)
+                    .addComponent(reActivateBtn)
+                    .addComponent(editBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        checkHoursBtn.setText("Check My Hours");
+        jPanel4.setBackground(new java.awt.Color(77, 77, 51));
 
+        checkHoursBtn.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        checkHoursBtn.setText("Check My Hours");
+        checkHoursBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        activateAdminBtn.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         activateAdminBtn.setText("Activate Admin");
+        activateAdminBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         activateAdminBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 activateAdminBtnActionPerformed(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton1.setText("Generate Payslip");
+        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -141,20 +187,26 @@ public class MainUI extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(checkHoursBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(27, 27, 27)
                 .addComponent(activateAdminBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(82, 82, 82)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(activateAdminBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                    .addComponent(checkHoursBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(checkHoursBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(activateAdminBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout clockOutBtnLayout = new javax.swing.GroupLayout(clockOutBtn);
@@ -162,39 +214,42 @@ public class MainUI extends javax.swing.JFrame {
         clockOutBtnLayout.setHorizontalGroup(
             clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(clockOutBtnLayout.createSequentialGroup()
-                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(206, 206, 206)
-                        .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, clockOutBtnLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(adminPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addComponent(adminPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(36, Short.MAX_VALUE))
+                    .addGroup(clockOutBtnLayout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(95, 95, 95))))
         );
         clockOutBtnLayout.setVerticalGroup(
             clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(clockOutBtnLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(adminPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(adminPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(14, 318, Short.MAX_VALUE)
+                        .addGap(298, 298, 298)
                         .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(clockOutBtnLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -270,6 +325,18 @@ public class MainUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_activateAdminBtnActionPerformed
 
+    private void employeeSummaryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeSummaryBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_employeeSummaryBtnActionPerformed
+
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -315,6 +382,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton deActivateBtn;
     private javax.swing.JButton editBtn;
     private javax.swing.JButton employeeSummaryBtn;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JButton payrollBtn;
