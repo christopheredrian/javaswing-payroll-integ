@@ -5,8 +5,14 @@
  */
 package ph.edu.slu.weavingpayrollapp.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import ph.edu.slu.weavingpayrollapp.controllers.MainUIController;
+import ph.edu.slu.weavingpayrollserver.employees.Employee;
 
 /**
  *
@@ -20,6 +26,16 @@ public class MainUI extends javax.swing.JFrame {
     public MainUI() {
         initComponents();
         adminPane.setVisible(false);
+        table.getModel();
+        List<Employee> employees = MainUIController.getAllEmployees();
+        TableModel tm = new DefaultTableModel(employees.size(), 2);
+
+        for (int i = 0; i < employees.size(); i++) {
+            System.out.println(employees.get(i).getId());
+            tm.setValueAt(employees.get(i).getId(), i, 0);
+            tm.setValueAt(employees.get(i).getLastName(), i, 1);
+        }
+        table.setModel(tm);
     }
 
     /**
@@ -52,7 +68,6 @@ public class MainUI extends javax.swing.JFrame {
 
         clockOutBtn.setBackground(new java.awt.Color(34, 204, 99));
 
-        table.setBackground(new java.awt.Color(77, 77, 51));
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -221,9 +236,8 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addComponent(adminPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(36, Short.MAX_VALUE))
+                        .addContainerGap(54, Short.MAX_VALUE))
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
                         .addGap(87, 87, 87)
                         .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -315,7 +329,7 @@ public class MainUI extends javax.swing.JFrame {
 
         if (okCxl == JOptionPane.OK_OPTION) {
             String passwordStr = new String(pf.getPassword());
-            if (passwordStr.equals("password")) {
+            if (MainUIController.activateAdmin(passwordStr)) {
                 adminPane.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Wrong Password!");
