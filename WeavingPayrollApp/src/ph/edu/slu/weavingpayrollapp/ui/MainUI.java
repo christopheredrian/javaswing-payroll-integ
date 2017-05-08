@@ -5,8 +5,15 @@
  */
 package ph.edu.slu.weavingpayrollapp.ui;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.table.DefaultTableModel;
@@ -23,19 +30,39 @@ public class MainUI extends javax.swing.JFrame {
     /**
      * Creates new form MainUI
      */
+    private boolean adminActive = false;
+
     public MainUI() {
         initComponents();
         adminPane.setVisible(false);
         table.getModel();
         List<Employee> employees = MainUIController.getAllEmployees();
-        TableModel tm = new DefaultTableModel(employees.size(), 2);
+
+        TableModel tm = new DefaultTableModel(employees.size(), 3);
 
         for (int i = 0; i < employees.size(); i++) {
             System.out.println(employees.get(i).getId());
             tm.setValueAt(employees.get(i).getId(), i, 0);
-            tm.setValueAt(employees.get(i).getLastName(), i, 1);
+            tm.setValueAt(employees.get(i).getFirstName(), i, 1);
+            tm.setValueAt(employees.get(i).getLastName(), i, 2);
         }
         table.setModel(tm);
+
+        runTimer();
+    }
+
+    private void runTimer() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        TimerTask timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                Date date = new Date();
+                currentTimeField.setText(dateFormat.format(date));
+            }
+        };
+        Timer timer = new Timer("textFieldTimer");//create a new Timer
+        timer.scheduleAtFixedRate(timerTask, 30, 1000);//this line starts the timer at t
     }
 
     /**
@@ -63,6 +90,7 @@ public class MainUI extends javax.swing.JFrame {
         checkHoursBtn = new javax.swing.JButton();
         activateAdminBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        currentTimeField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -224,6 +252,11 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        currentTimeField.setBackground(new java.awt.Color(34, 204, 99));
+        currentTimeField.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        currentTimeField.setText("7:41");
+        currentTimeField.setBorder(null);
+
         javax.swing.GroupLayout clockOutBtnLayout = new javax.swing.GroupLayout(clockOutBtn);
         clockOutBtn.setLayout(clockOutBtnLayout);
         clockOutBtnLayout.setHorizontalGroup(
@@ -240,9 +273,12 @@ public class MainUI extends javax.swing.JFrame {
                         .addContainerGap(54, Short.MAX_VALUE))
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
                         .addGap(87, 87, 87)
-                        .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(currentTimeField)
+                            .addGroup(clockOutBtnLayout.createSequentialGroup()
+                                .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(95, 95, 95))))
         );
         clockOutBtnLayout.setVerticalGroup(
@@ -256,7 +292,9 @@ public class MainUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(298, 298, 298)
+                        .addGap(109, 109, 109)
+                        .addComponent(currentTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
                         .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -289,53 +327,28 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void activateAdminBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activateAdminBtnActionPerformed
-        // TODO: Condition here
-//        String input = JOptionPane.showInputDialog(this, "Enter Password", "Authenticate", JOptionPane.INFORMATION_MESSAGE);
-//        String[] options = new String[]{"OK", "Cancel"};
-//        int option = JOptionPane.showOptionDialog(null, "Password", "The title",
-//                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-//                null, options, options[1]);
-//
-//        if (option == 0) {
-//            if (input.equals("password")) {
-//                adminPane.setVisible(true);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Wrong Password!");
-//            }
-//        }
-// panel
-//        JPanel panel = new JPanel();
-//        JLabel label = new JLabel("Enter a password:");
-//        JPasswordField pass = new JPasswordField(10);
-//        panel.add(label);
-//        panel.add(pass);
-//        String[] options = new String[]{"OK", "Cancel"};
-//        int option = JOptionPane.showOptionDialog(null, panel, "The title",
-//                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-//                null, options, options[1]);
-//        if (option == 0) // pressing OK button
-//        {
-//            char[] password = pass.getPassword();
-//            String passwordStr = new String(password);
-//            if (passwordStr.equals("password")) {
-//                adminPane.setVisible(true);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Wrong Password!");
-//            }
-//            System.out.println("Your password is: " + new String(password));
-//        }
-        JPasswordField pf = new JPasswordField();
-        int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (!adminActive) {
+            JPasswordField pf = new JPasswordField();
+            int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-        if (okCxl == JOptionPane.OK_OPTION) {
-            String passwordStr = new String(pf.getPassword());
-            if (MainUIController.activateAdmin(passwordStr)) {
-                adminPane.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Wrong Password!");
+            if (okCxl == JOptionPane.OK_OPTION) {
+                String passwordStr = new String(pf.getPassword());
+                if (MainUIController.activateAdmin(passwordStr)) {
+                    adminPane.setVisible(true);
+                    adminActive = true;
+                    activateAdminBtn.setText("Deactivate Admin");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Wrong Password!");
+                }
+                String password = new String(pf.getPassword());
+                System.err.println("You entered: " + password);
             }
-            String password = new String(pf.getPassword());
-            System.err.println("You entered: " + password);
+        } else {
+            // is admin
+            adminPane.setVisible(false);
+            adminActive = false;
+            activateAdminBtn.setText("Activate Admin");
+
         }
     }//GEN-LAST:event_activateAdminBtnActionPerformed
 
@@ -393,6 +406,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JButton checkHoursBtn;
     private javax.swing.JButton clockInBtn;
     private javax.swing.JPanel clockOutBtn;
+    private javax.swing.JTextField currentTimeField;
     private javax.swing.JButton deActivateBtn;
     private javax.swing.JButton editBtn;
     private javax.swing.JButton employeeSummaryBtn;
