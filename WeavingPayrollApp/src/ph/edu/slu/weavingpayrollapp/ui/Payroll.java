@@ -35,42 +35,42 @@ public class Payroll extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Integer(10111), "Locaben, Camille", "General Manager",  new Double(1200.0),  new Double(31200.0),  new Double(26.0),  new Double(31200.0),  new Double(4790.4),  new Double(35990.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10211), "Balilit,Marian T.", "Head Supervisor",  new Double(900.0),  new Double(23400.0),  new Double(26.0),  new Double(23400.0),  new Double(4790.4),  new Double(28190.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10212), "Lucahi,Preciouslyn B.", "Head Supervisor",  new Double(900.0),  new Double(23400.0),  new Double(26.0),  new Double(23400.0),  new Double(4790.4),  new Double(28190.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10213), "Sacedon, Mary Jhoe M.", "Accountant",  new Double(700.0),  new Double(18200.0),  new Double(26.0),  new Double(18200.0),  new Double(4790.4),  new Double(22990.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10214), "Dirige, Renzo Lanz O.", "Acountant",  new Double(700.0),  new Double(18200.0),  new Double(26.0),  new Double(18200.0),  new Double(4790.4),  new Double(22990.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10215), "avelino,michelle f", "Clerk",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(10400.0),  new Double(4790.4),  new Double(15119.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10216), "Uy, John Michael V", "Clerk",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(400.0),  new Double(4790.4),  new Double(15119.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10217), "PABITO, Haydee Mae B.", "Clerk",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(10400.0),  new Double(4790.4),  new Double(15119.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10311), "Reyes, Judylyn U.", "Production Supervisor",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(10400.0),  new Double(4790.4),  new Double(15119.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10312), "LANDAGORA, MARK ANDY B. ", "Production Supervisor",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(10400.0),  new Double(4790.4),  new Double(15119.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10411), "Dirige, Renzo Lanz O.", "Production Operator",  new Double(320.0),  new Double(8320.0),  new Double(26.0),  new Double(8320.0),  new Double(4790.4),  new Double(13110.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
-                { new Integer(10412), "LUMIUAN, RHEA B.", "Production Operator",  new Double(320.0),  new Double(8320.0),  new Double(26.0),  new Double(8320.0),  new Double(4790.4),  new Double(13110.0),  new Double(4039.84),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64), null},
-                { new Integer(10413), null, "Production Operator", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10414), null, "Production Operator", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10415), null, "Production Operator", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10416), null, "Production Operator", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10417), null, "Production Operator", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10418), null, "Production Operator", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10421), null, "Tailor", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10422), null, "Tailor", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10423), null, "Tailor", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10424), null, "Tailor", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10425), null, "Tailor", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10426), null, "Tailor", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10427), null, "Tailor", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10428), null, "Tailor", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10511), null, "Maintenance Man", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10512), null, "Machine Maintenance Man", null, null, null, null, null, null, null, null, null, null, null, null},
-                { new Integer(10513), null, "Machine Maintenance Man", null, null, null, null, null, null, null, null, null, null, null, null}
+                { new Integer(10111), "Locaben, Camille", "General Manager",  new Double(1200.0),  new Double(31200.0),  new Double(26.0),  new Double(31200.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10211), "Balilit,Marian T.", "Head Supervisor",  new Double(900.0),  new Double(23400.0),  new Double(26.0),  new Double(23400.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10212), "Lucahi,Preciouslyn B.", "Head Supervisor",  new Double(900.0),  new Double(23400.0),  new Double(26.0),  new Double(23400.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10213), "Sacedon, Mary Jhoe M.", "Accountant",  new Double(700.0),  new Double(18200.0),  new Double(26.0),  new Double(18200.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10214), "Dirige, Renzo Lanz O.", "Acountant",  new Double(700.0),  new Double(18200.0),  new Double(26.0),  new Double(18200.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10215), "avelino,michelle f", "Clerk",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(10400.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10216), "Uy, John Michael V", "Clerk",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(400.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10217), "PABITO, Haydee Mae B.", "Clerk",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(10400.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10311), "Reyes, Judylyn U.", "Production Supervisor",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(10400.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10312), "LANDAGORA, MARK ANDY B. ", "Production Supervisor",  new Double(400.0),  new Double(10400.0),  new Double(26.0),  new Double(10400.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10411), "Dirige, Renzo Lanz O.", "Production Operator",  new Double(320.0),  new Double(8320.0),  new Double(26.0),  new Double(8320.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64),  new Double(25587.69)},
+                { new Integer(10412), "LUMIUAN, RHEA B.", "Production Operator",  new Double(320.0),  new Double(8320.0),  new Double(26.0),  new Double(8320.0),  new Double(581.3),  new Integer(100),  new Double(337.5),  new Double(5058.64), null},
+                { new Integer(10413), null, "Production Operator", null, null, null, null, null, null, null, null, null},
+                { new Integer(10414), null, "Production Operator", null, null, null, null, null, null, null, null, null},
+                { new Integer(10415), null, "Production Operator", null, null, null, null, null, null, null, null, null},
+                { new Integer(10416), null, "Production Operator", null, null, null, null, null, null, null, null, null},
+                { new Integer(10417), null, "Production Operator", null, null, null, null, null, null, null, null, null},
+                { new Integer(10418), null, "Production Operator", null, null, null, null, null, null, null, null, null},
+                { new Integer(10421), null, "Tailor", null, null, null, null, null, null, null, null, null},
+                { new Integer(10422), null, "Tailor", null, null, null, null, null, null, null, null, null},
+                { new Integer(10423), null, "Tailor", null, null, null, null, null, null, null, null, null},
+                { new Integer(10424), null, "Tailor", null, null, null, null, null, null, null, null, null},
+                { new Integer(10425), null, "Tailor", null, null, null, null, null, null, null, null, null},
+                { new Integer(10426), null, "Tailor", null, null, null, null, null, null, null, null, null},
+                { new Integer(10427), null, "Tailor", null, null, null, null, null, null, null, null, null},
+                { new Integer(10428), null, "Tailor", null, null, null, null, null, null, null, null, null},
+                { new Integer(10511), null, "Maintenance Man", null, null, null, null, null, null, null, null, null},
+                { new Integer(10512), null, "Machine Maintenance Man", null, null, null, null, null, null, null, null, null},
+                { new Integer(10513), null, "Machine Maintenance Man", null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Employee ID", "Employee Name", "Company Position", "Rate Per Day", "Basic Monthly Rate", "Days Worked", "Basic Monthly Pay", "Overtime Pay", "Gross Pay", "Withholding Tax", "SSS Contribution", "PAG-IBIG Contribution", "PHIL- HEALTH Contribution", "TOTAL Deduction", "NET PAY"
+                "Employee ID", "Employee Name", "Company Position", "Rate Per Day", "Basic Monthly Rate", "Days Worked", "Basic Monthly Pay", "SSS Contribution", "PAG-IBIG Contribution", "PHIL- HEALTH Contribution", "TOTAL Deduction", "NET PAY"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
 
             public Class getColumnClass(int columnIndex) {

@@ -70,7 +70,7 @@ public class MainUI extends javax.swing.JFrame {
         timer.scheduleAtFixedRate(timerTask, 30, 1000);//this line starts the timer at t
     }
 
-    protected void syncTable() throws RemoteException {
+    public void syncTable() throws RemoteException {
         table.getModel();
         DefaultTableModel tm = (DefaultTableModel) table.getModel();
         int counter = 0;
@@ -187,7 +187,7 @@ public class MainUI extends javax.swing.JFrame {
         });
 
         employeeSummaryBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
-        employeeSummaryBtn.setText("Employee Summary");
+        employeeSummaryBtn.setText("Employees");
         employeeSummaryBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         employeeSummaryBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,6 +198,11 @@ public class MainUI extends javax.swing.JFrame {
         payrollBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         payrollBtn.setText("Payroll");
         payrollBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        payrollBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payrollBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout adminPaneLayout = new javax.swing.GroupLayout(adminPane);
         adminPane.setLayout(adminPaneLayout);
@@ -241,6 +246,11 @@ public class MainUI extends javax.swing.JFrame {
         checkHoursBtn.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         checkHoursBtn.setText("Check My Hours");
         checkHoursBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        checkHoursBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkHoursBtnActionPerformed(evt);
+            }
+        });
 
         activateAdminBtn.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         activateAdminBtn.setText("Activate Admin");
@@ -500,12 +510,38 @@ public class MainUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clockInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clockInBtnActionPerformed
+        try {
+            int selected = table.getSelectedRow();
+            String id = (String) table.getModel().getValueAt(selected, 0);
+            if (mainUIServer.clockIn(id)) {
+                JOptionPane.showMessageDialog(this, "User clocked in..");
+                syncTable();
+            } else {
+                JOptionPane.showMessageDialog(this, "Unable to clock user...");
+            }
 
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(this, "An error occured...");
+        }
 
     }//GEN-LAST:event_clockInBtnActionPerformed
 
     private void clockOutBntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clockOutBntActionPerformed
+        try {
+            int selected = table.getSelectedRow();
+            String id = (String) table.getModel().getValueAt(selected, 0);
+            if (mainUIServer.clockOut(id)) {
+                JOptionPane.showMessageDialog(this, "User clocked out..");
+                syncTable();
 
+            } else {
+                JOptionPane.showMessageDialog(this, "Unable to clock user...");
+
+            }
+
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(this, "An error occured...");
+        }
     }//GEN-LAST:event_clockOutBntActionPerformed
 
     private void activateAdminBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activateAdminBtnActionPerformed
@@ -540,7 +576,11 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_activateAdminBtnActionPerformed
 
     private void employeeSummaryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeSummaryBtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            new Employees().setVisible(true);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_employeeSummaryBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
@@ -548,7 +588,7 @@ public class MainUI extends javax.swing.JFrame {
             int selected = table.getSelectedRow();
             String id = (String) table.getModel().getValueAt(selected, 0);
             Employee e = mainUIServer.getEmployees().get(id);
-            new EditEmployee(e).setVisible(true);
+            new EditEmployee(e, this).setVisible(true);
             if (selected > -1) {
             } else {
 
@@ -561,7 +601,19 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            int selected = table.getSelectedRow();
+            String id = (String) table.getModel().getValueAt(selected, 0);
+            Employee e = mainUIServer.getEmployees().get(id);
+            new Payslip(e).setVisible(true);
+            if (selected > -1) {
+            } else {
+            }
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "No row was selected", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
@@ -579,7 +631,7 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jXButton1ActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        new AddEmployee().setVisible(true);
+        new AddEmployee(this).setVisible(true);
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deActivateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deActivateBtnActionPerformed
@@ -592,6 +644,7 @@ public class MainUI extends javax.swing.JFrame {
             } else {
             }
             mainUIServer.addEditEmployee(e);
+            this.syncTable();
             JOptionPane.showMessageDialog(this, "Employee Deactivated..", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (RemoteException e) {
             System.err.println(e.getMessage());
@@ -602,7 +655,7 @@ public class MainUI extends javax.swing.JFrame {
 
     private void reActivateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reActivateBtnActionPerformed
         try {
-            new ReactivateEmployee().setVisible(true);
+            new ReactivateEmployee(this).setVisible(true);
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -633,6 +686,33 @@ public class MainUI extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_tableClicked
+
+    private void payrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollBtnActionPerformed
+        try {
+            new PayrollForm(this).setVisible(true);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_payrollBtnActionPerformed
+
+    private void checkHoursBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkHoursBtnActionPerformed
+        try {
+            int selected = table.getSelectedRow();
+            String id = (String) table.getModel().getValueAt(selected, 0);
+            Employee e = mainUIServer.getEmployees().get(id);
+            if (selected > -1) {
+            } else {
+            }
+            JOptionPane.showMessageDialog(this, "You worked for "
+                    + e.getDaysWorked() + " Hours",
+                    "Total Hours", JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "No row was selected", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_checkHoursBtnActionPerformed
 
     /**
      * @param args the command line arguments

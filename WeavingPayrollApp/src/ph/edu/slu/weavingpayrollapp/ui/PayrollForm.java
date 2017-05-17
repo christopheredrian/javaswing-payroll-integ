@@ -22,7 +22,7 @@ import weavingpayrollrmiserver.models.Employee;
  *
  * @author user
  */
-public class ReactivateEmployee extends javax.swing.JFrame {
+public class PayrollForm extends javax.swing.JFrame {
 
     private MainUIServer rmiServer = RMIController.getMainUIServer();
     private final MainUI main;
@@ -33,7 +33,7 @@ public class ReactivateEmployee extends javax.swing.JFrame {
      * @param main
      * @throws java.rmi.RemoteException
      */
-    public ReactivateEmployee(MainUI main) throws RemoteException {
+    public PayrollForm(MainUI main) throws RemoteException {
         initComponents();
         syncTable();
         this.main = main;
@@ -44,21 +44,23 @@ public class ReactivateEmployee extends javax.swing.JFrame {
         DefaultTableModel tm = (DefaultTableModel) table.getModel();
         int counter = 0;
         HashMap<String, Employee> employees = rmiServer.getEmployees();
-
+        System.out.println(employees);
         tm.setNumRows(employees.size());
 
         for (Map.Entry<String, Employee> entry : employees.entrySet()) {
             String key = entry.getKey();
             Employee value = entry.getValue();
-            if (!value.isActive()) {
                 tm.setValueAt(value.getId(), counter, 0);
-                tm.setValueAt(value.getFirstName(), counter, 1);
-                tm.setValueAt(value.getLastName(), counter, 2);
-                tm.setValueAt(value.getPhoneNumber(), counter, 3);
-                tm.setValueAt(value.getPosition(), counter, 4);
-                tm.setValueAt(value.getHireDate(), counter, 5);
+                tm.setValueAt(value.getLastName() + ", " + value.getFirstName(), counter, 1);
+                tm.setValueAt(value.getPosition(), counter, 2);
+                tm.setValueAt(value.getDailyRate(), counter, 3);
+                tm.setValueAt(value.getDaysWorked(), counter, 4);
+                tm.setValueAt(value.getSssContribution(), counter, 5);
+                tm.setValueAt(value.getPagIbigContribution(), counter, 6);
+                tm.setValueAt(value.getPhilhealthContribution(), counter, 7);
+                tm.setValueAt(value.getTotalDeduction(), counter, 8);
+                tm.setValueAt(value.getNetPay(), counter, 9);
                 counter++;
-            }
         }
         tm.setNumRows(counter);
         counter = 0;
@@ -78,7 +80,6 @@ public class ReactivateEmployee extends javax.swing.JFrame {
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jPopupMenu2 = new javax.swing.JPopupMenu();
         jPanel1 = new javax.swing.JPanel();
-        reActivateBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         finishBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -90,16 +91,8 @@ public class ReactivateEmployee extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        reActivateBtn.setBackground(new java.awt.Color(255, 255, 255));
-        reActivateBtn.setText("Reactivate Employee");
-        reActivateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reActivateBtnActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("Reactivate Employee");
+        jLabel1.setText("Employee Payroll Summary");
 
         finishBtn.setBackground(new java.awt.Color(255, 255, 255));
         finishBtn.setText("Finish");
@@ -111,15 +104,23 @@ public class ReactivateEmployee extends javax.swing.JFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "First Name", "Last Name", "Contact", "Position", "Hire Date"
+                "Id", "Name", "Position", "Daily Rate", "Days Worked", "SSS", "Pag-Ibig", "Philhealth", "TOTAL Deduction", "Net Pay"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         table.setEditable(false);
         jScrollPane2.setViewportView(table);
 
@@ -134,36 +135,33 @@ public class ReactivateEmployee extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 268, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(reActivateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(592, 592, 592)
+                                .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(239, 239, 239)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 27, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(475, 475, 475)
+                        .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                 .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(reActivateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -180,26 +178,6 @@ public class ReactivateEmployee extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void reActivateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reActivateBtnActionPerformed
-        try {
-            int selected = table.getSelectedRow();
-            String id = (String) table.getModel().getValueAt(selected, 0);
-            Employee e = rmiServer.getEmployees().get(id);
-            e.setActive(true);
-            if (selected > -1) {
-            } else {
-            }
-            rmiServer.addEditEmployee(e);
-            JOptionPane.showMessageDialog(this, "Employee Activated..", "Success", JOptionPane.INFORMATION_MESSAGE);
-            syncTable();
-            this.main.syncTable();
-        } catch (RemoteException e) {
-            System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(this, "No row was selected", "Error", JOptionPane.ERROR_MESSAGE);
-
-        }
-    }//GEN-LAST:event_reActivateBtnActionPerformed
 
     private void finishBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishBtnActionPerformed
         this.dispose();
@@ -255,7 +233,6 @@ public class ReactivateEmployee extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JButton reActivateBtn;
     private org.jdesktop.swingx.JXSearchField searchField;
     private org.jdesktop.swingx.JXTable table;
     // End of variables declaration//GEN-END:variables

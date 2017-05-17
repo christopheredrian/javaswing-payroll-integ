@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 import ph.edu.slu.weavingpayrollapp.controllers.RMIController;
 import weavingpayrollrmiserver.interfaces.MainUIServer;
 import weavingpayrollrmiserver.models.Employee;
-import weavingpayrollrmiserver.models.Position;
 
 /**
  *
@@ -28,13 +27,15 @@ import weavingpayrollrmiserver.models.Position;
 public class EditEmployee extends javax.swing.JFrame {
 
     private MainUIServer rmiServer = RMIController.getMainUIServer();
+    private MainUI main;
 
     /**
      * Creates new form EditEmployee
      *
      * @param employee
+     * @param main
      */
-    public EditEmployee(Employee employee) {
+    public EditEmployee(Employee employee, MainUI main) {
         initComponents();
         this.setVisible(true);
         this.setEnabled(true);
@@ -49,13 +50,14 @@ public class EditEmployee extends javax.swing.JFrame {
 //        Date bday = Date.from(employee.getBirthday().atStartOfDay(ZoneId.systemDefault()).toInstant());
         birthDate.setDate(Date.from(employee.getBirthday().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         hireDate.setDate(Date.from(employee.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        position.getEditor().setItem(employee.getPosition());
-        monthlyPay.setText(Double.toString(employee.getMonthlyPay()));
+        position.setSelectedItem(Utilities.parsePosition(employee.getPosition()));
+        dailyRate.setText(Double.toString(employee.getDailyRate()));
         sss.setText(Double.toString(employee.getSssContribution()));
         philHealth.setText(Double.toString(employee.getPhilhealthContribution()));
         pagIbig.setText(Double.toString(employee.getPagIbigContribution()));
         incomeTax.setText(Double.toString(employee.getIncomeTax()));
 // fn, ln, mn, address, phone, birthdate, title, month, sss, phil, pag, income
+        this.main = main;
     }
 
     private EditEmployee() {
@@ -180,7 +182,7 @@ public class EditEmployee extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         philHealth = new javax.swing.JTextField();
-        monthlyPay = new javax.swing.JTextField();
+        dailyRate = new javax.swing.JTextField();
         pagIbig = new javax.swing.JTextField();
         sss = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
@@ -934,7 +936,7 @@ public class EditEmployee extends javax.swing.JFrame {
         jLabel53.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel53.setText("Employee Salaries/Wages");
 
-        jLabel13.setText("Basic Monthly Pay");
+        jLabel13.setText("Daily Rate");
 
         jLabel109.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel109.setText("Employee Contributions");
@@ -944,6 +946,8 @@ public class EditEmployee extends javax.swing.JFrame {
         jLabel15.setText("PHILHEALTH");
 
         jLabel16.setText("PAG-IBIG");
+
+        dailyRate.setEditable(false);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel17.setText("Php");
@@ -982,7 +986,7 @@ public class EditEmployee extends javax.swing.JFrame {
                                     .addGap(18, 18, 18)
                                     .addComponent(jLabel17)
                                     .addGap(7, 7, 7)
-                                    .addComponent(monthlyPay, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(dailyRate, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel10Layout.createSequentialGroup()
                                     .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel15)
@@ -1024,7 +1028,7 @@ public class EditEmployee extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(monthlyPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dailyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel109, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1096,7 +1100,12 @@ public class EditEmployee extends javax.swing.JFrame {
 
         hireDate.setEditable(false);
 
-        position.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Supervisor", "Tailor", "Maintenace", "Manager", " " }));
+        position.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Supervisor", "Tailor", "Maintenace", "Manager" }));
+        position.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                positionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -1297,7 +1306,8 @@ public class EditEmployee extends javax.swing.JFrame {
             e.setBirthday(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
             e.setHireDate(LocalDate.now());
             e.setPosition(Utilities.parsePosition(position.getSelectedItem().toString()));
-            e.setMonthlyPay(Double.parseDouble(monthlyPay.getText()));
+            e.setDailyRate(Double.parseDouble(dailyRate.getText()));
+
             e.setSssContribution(Double.parseDouble(sss.getText()));
             e.setPhilhealthContribution(Double.parseDouble(philHealth.getText()));
             e.setPagIbigContribution(Double.parseDouble(pagIbig.getText()));
@@ -1306,6 +1316,7 @@ public class EditEmployee extends javax.swing.JFrame {
             System.out.println(rmiServer.getEmployees());
             JOptionPane.showMessageDialog(this, "Edit success!", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
+            main.syncTable();
             this.dispose();
 
         } catch (NumberFormatException ex) {
@@ -1320,6 +1331,11 @@ public class EditEmployee extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void positionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionActionPerformed
+        String selectedItem = (String) position.getSelectedItem();
+        dailyRate.setText(Double.toString(Utilities.getDailyRate(selectedItem)));
+    }//GEN-LAST:event_positionActionPerformed
 //
 ////    /**
 ////     * @param args the command line arguments
@@ -1362,6 +1378,7 @@ public class EditEmployee extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField address;
     private org.jdesktop.swingx.JXDatePicker birthDate;
+    private javax.swing.JTextField dailyRate;
     private javax.swing.JTextField firstName;
     private javax.swing.JLabel headerLabel;
     private org.jdesktop.swingx.JXDatePicker hireDate;
@@ -1498,7 +1515,6 @@ public class EditEmployee extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField lastName;
     private javax.swing.JTextField middleName;
-    private javax.swing.JTextField monthlyPay;
     private javax.swing.JTextField pagIbig;
     private javax.swing.JTextField philHealth;
     private javax.swing.JTextField phoneNumber;

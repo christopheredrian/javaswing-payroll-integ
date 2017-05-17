@@ -28,4 +28,38 @@ public class Utilities {
         }
         return null;
     }
+
+    public static String parsePosition(Position pos) {
+        switch (pos) {
+            case ADMIN:
+                return "Admin";
+            case MAINTENANCE:
+                return "Maintenance";
+            case TAILOR:
+                return "Tailor";
+            case MANAGER:
+                return "Manager";
+            case SUPERVISOR:
+                return "Supervisor";
+        }
+        return null;
+    }
+
+    public static double getDailyRate(String pos) {
+        switch (pos) {
+            case "Admin":
+                return 1000;
+            case "Maintenance":
+                return 285;
+            case "Tailor":
+                return 300;
+            case "Manager":
+                return 800;
+            case "Supervisor":
+                return 400;
+        }
+        return 0;
+
+    }
+
 }

@@ -11,6 +11,7 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import ph.edu.slu.weavingpayrollapp.controllers.RMIController;
 import weavingpayrollrmiserver.interfaces.MainUIServer;
@@ -24,13 +25,18 @@ import weavingpayrollrmiserver.models.Position;
 public class AddEmployee extends javax.swing.JFrame {
 
     private MainUIServer rmiServer = RMIController.getMainUIServer();
+    private final MainUI main;
 
     /**
      * Creates new form EditEmployee
+     *
+     * @param main
      */
-    public AddEmployee() {
+    public AddEmployee(MainUI main) {
         initComponents();
         this.setAlwaysOnTop(true);
+        this.main = main;
+        dailyRate.setText(Double.toString(1000));
 
     }
 
@@ -147,13 +153,13 @@ public class AddEmployee extends javax.swing.JFrame {
         jLabel97 = new javax.swing.JLabel();
         jLabel101 = new javax.swing.JLabel();
         jLabel53 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        dailyRateLabel = new javax.swing.JLabel();
         jLabel109 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         philHealth = new javax.swing.JTextField();
-        monthlyPay = new javax.swing.JTextField();
+        dailyRate = new javax.swing.JTextField();
         pagIbig = new javax.swing.JTextField();
         sss = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
@@ -906,7 +912,7 @@ public class AddEmployee extends javax.swing.JFrame {
         jLabel53.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel53.setText("Employee Salaries/Wages");
 
-        jLabel13.setText("Basic Monthly Pay");
+        dailyRateLabel.setText("Daily Rate");
 
         jLabel109.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel109.setText("Employee Contributions");
@@ -916,6 +922,8 @@ public class AddEmployee extends javax.swing.JFrame {
         jLabel15.setText("PHILHEALTH");
 
         jLabel16.setText("PAG-IBIG");
+
+        dailyRate.setEditable(false);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel17.setText("Php");
@@ -950,11 +958,11 @@ public class AddEmployee extends javax.swing.JFrame {
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel10Layout.createSequentialGroup()
-                                    .addComponent(jLabel13)
+                                    .addComponent(dailyRateLabel)
                                     .addGap(18, 18, 18)
                                     .addComponent(jLabel17)
                                     .addGap(7, 7, 7)
-                                    .addComponent(monthlyPay, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(dailyRate, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel10Layout.createSequentialGroup()
                                     .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel15)
@@ -995,8 +1003,8 @@ public class AddEmployee extends javax.swing.JFrame {
                         .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(monthlyPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dailyRateLabel)
+                    .addComponent(dailyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel109, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1062,7 +1070,12 @@ public class AddEmployee extends javax.swing.JFrame {
         jLabel105.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel105.setText("Employee Information");
 
-        position.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Supervisor", "Tailor", "Maintenace", "Manager", " " }));
+        position.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Supervisor", "Tailor", "Maintenace", "Manager" }));
+        position.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                positionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -1263,7 +1276,7 @@ public class AddEmployee extends javax.swing.JFrame {
             e.setBirthday(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
             e.setHireDate(LocalDate.now());
             e.setPosition(Utilities.parsePosition(position.getSelectedItem().toString()));
-            e.setMonthlyPay(Double.parseDouble(monthlyPay.getText()));
+            e.setDailyRate(Double.parseDouble(dailyRate.getText()));
             e.setSssContribution(Double.parseDouble(sss.getText()));
             e.setPhilhealthContribution(Double.parseDouble(philHealth.getText()));
             e.setPagIbigContribution(Double.parseDouble(pagIbig.getText()));
@@ -1271,10 +1284,12 @@ public class AddEmployee extends javax.swing.JFrame {
             rmiServer.addEditEmployee(e);
             System.out.println(rmiServer.getEmployees());
             JOptionPane.showMessageDialog(this, "Added new Employee!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            main.syncTable();
             this.dispose();
 
-        } catch (NumberFormatException ex) {
+        } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(this, "Invalid input!");
+            ex.printStackTrace();
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(this, "Network error..");
         }
@@ -1284,45 +1299,52 @@ public class AddEmployee extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void positionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionActionPerformed
+        String selectedItem = (String) position.getSelectedItem();
+        dailyRate.setText(Double.toString(Utilities.getDailyRate(selectedItem)));
+    }//GEN-LAST:event_positionActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddEmployee().setVisible(true);
-            }
-        });
-    }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("windows".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new AddEmployee().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField address;
     private org.jdesktop.swingx.JXDatePicker birthDate;
+    private javax.swing.JTextField dailyRate;
+    private javax.swing.JLabel dailyRateLabel;
     private javax.swing.JTextField firstName;
     private org.jdesktop.swingx.JXDatePicker hireDate;
     private javax.swing.JTextField id;
@@ -1355,7 +1377,6 @@ public class AddEmployee extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel109;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -1459,7 +1480,6 @@ public class AddEmployee extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField lastName;
     private javax.swing.JTextField middleName;
-    private javax.swing.JTextField monthlyPay;
     private javax.swing.JTextField pagIbig;
     private javax.swing.JTextField philHealth;
     private javax.swing.JTextField phoneNumber;

@@ -29,25 +29,81 @@ public class Employee implements Serializable {
     private Position position;
 
     private double monthlyPay;
+    private double dailyRate;
+    private double hoursWorked;
+
     private double hourlyRate;
     private double sssContribution;
     private double philhealthContribution;
     private double pagIbigContribution;
     private double incomeTax;
+    private int daysWorked;
 
     private List<DailyTimeCard> timeCards = new ArrayList<>();
     private DailyTimeCard currentTimeCard;
 
-    public Employee() {
-        this.active = true;
+    public double getHoursWorked() {
+        return hoursWorked;
     }
 
-    public Employee(String id, String firstName, String lastName, String password) {
+    public void setHoursWorked(double hoursWorked) {
+        this.hoursWorked = hoursWorked;
+    }
+
+    public static double getDailyRate(Position pos) {
+        switch (pos) {
+            case ADMIN:
+                return 1000;
+            case MAINTENANCE:
+                return 285;
+            case TAILOR:
+                return 300;
+            case MANAGER:
+                return 800;
+            case SUPERVISOR:
+                return 400;
+        }
+        return 0;
+
+    }
+
+    public Employee() {
+        this.active = true;
+        this.password = "password";
+        this.pagIbigContribution = 100.00;
+        this.philhealthContribution = 250.00;
+    }
+
+    public Employee(String id, String firstName, String lastName) {
         this();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.password = password;
+    }
+
+    public double getTotalDeduction() {
+        return sssContribution + pagIbigContribution
+                + philhealthContribution;
+    }
+
+    public double getNetPay() {
+        return (getDailyRate() * daysWorked) - (getTotalDeduction());
+    }
+
+    public double getDailyRate() {
+        return getDailyRate(this.position);
+    }
+
+    public void setDailyRate(double dailyRate) {
+        this.dailyRate = dailyRate;
+    }
+
+    public int getDaysWorked() {
+        return daysWorked;
+    }
+
+    public void setDaysWorked(int daysWorked) {
+        this.daysWorked = daysWorked;
     }
 
     public boolean isActive() {
