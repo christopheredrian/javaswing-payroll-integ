@@ -5,17 +5,58 @@
  */
 package ph.edu.slu.weavingpayrollapp.ui;
 
+import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import ph.edu.slu.weavingpayrollapp.controllers.RMIController;
+import weavingpayrollrmiserver.interfaces.MainUIServer;
+import weavingpayrollrmiserver.models.Employee;
+
 /**
  *
  * @author user
  */
 public class ReactivateEmployee extends javax.swing.JFrame {
 
+    private MainUIServer rmiServer = RMIController.getMainUIServer();
+
     /**
      * Creates new form ReactivateEmployee
      */
-    public ReactivateEmployee() {
+    public ReactivateEmployee() throws RemoteException {
         initComponents();
+        syncTable();
+    }
+
+    protected void syncTable() throws RemoteException {
+        table.getModel();
+        DefaultTableModel tm = (DefaultTableModel) table.getModel();
+        int counter = 0;
+        HashMap<String, Employee> employees = rmiServer.getEmployees();
+
+        tm.setNumRows(employees.size());
+
+        for (Map.Entry<String, Employee> entry : employees.entrySet()) {
+            String key = entry.getKey();
+            Employee value = entry.getValue();
+            if (!value.isActive()) {
+                tm.setValueAt(value.getId(), counter, 0);
+                tm.setValueAt(value.getFirstName(), counter, 1);
+                tm.setValueAt(value.getLastName(), counter, 2);
+                tm.setValueAt(value.getLastName(), counter, 3);
+                tm.setValueAt(value.getLastName(), counter, 4);
+                tm.setValueAt(value.getLastName(), counter, 5);
+                counter++;
+            }
+        }
+        tm.setNumRows(counter);
+        counter = 0;
+
+        table.setModel(tm);
     }
 
     /**
@@ -29,73 +70,126 @@ public class ReactivateEmployee extends javax.swing.JFrame {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jPopupMenu2 = new javax.swing.JPopupMenu();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        reActivateBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        finishBtn = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        table = new org.jdesktop.swingx.JXTable();
+        searchField = new org.jdesktop.swingx.JXSearchField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(34, 204, 99));
 
-        jTable1.setBackground(new java.awt.Color(240, 240, 240));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"10421", "Dela Cruz", "Abalos", "Duke", "Tailor"},
-                {"10435", "Winston", "Ekko", "Zander", "Production Operator"},
-                {"10211", "Lee", "Hwang", "Jet", "Accountant"},
-                {"10311", "Gordon", "Lopez", "Allan", "Production Supervisor"},
-                {"10215", "Song", "Bok", "Hana", "Supervisor"},
-                {"10421", "Moore", "Cooper", "Brandon", "Clerk"}
-            },
-            new String [] {
-                "Employee ID", "Last Name", "Middle Name", "Last name", "Job Title"
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        reActivateBtn.setBackground(new java.awt.Color(255, 255, 255));
+        reActivateBtn.setText("Reactivate Employee");
+        reActivateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reActivateBtnActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        jButton1.setText("Reactivate Employee");
-
-        jButton2.setText("Finish");
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Reactivate Employee");
+
+        finishBtn.setBackground(new java.awt.Color(255, 255, 255));
+        finishBtn.setText("Finish");
+        finishBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finishBtnActionPerformed(evt);
+            }
+        });
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "First Name", "Last Name", "Contact", "Position", "Hire Date"
+            }
+        ));
+        table.setEditable(false);
+        jScrollPane2.setViewportView(table);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 268, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(reActivateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(reActivateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(181, 181, 181))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(292, 292, 292)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(50, 50, 50))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void reActivateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reActivateBtnActionPerformed
+        try {
+            int selected = table.getSelectedRow();
+            String id = (String) table.getModel().getValueAt(selected, 0);
+            Employee e = rmiServer.getEmployees().get(id);
+            e.setActive(true);
+            if (selected > -1) {
+            } else {
+            }
+            rmiServer.addEditEmployee(e);
+            JOptionPane.showMessageDialog(this, "Employee Activated..", "Success", JOptionPane.INFORMATION_MESSAGE);
+            syncTable();
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "No row was selected", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_reActivateBtnActionPerformed
+
+    private void finishBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishBtnActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_finishBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,18 +221,24 @@ public class ReactivateEmployee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ReactivateEmployee().setVisible(true);
+                try {
+                    new ReactivateEmployee().setVisible(true);
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton finishBtn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton reActivateBtn;
+    private org.jdesktop.swingx.JXSearchField searchField;
+    private org.jdesktop.swingx.JXTable table;
     // End of variables declaration//GEN-END:variables
 }

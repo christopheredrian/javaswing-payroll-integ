@@ -4,3 +4,6 @@
 /WeavingPayrollServer/build/
 /WeavingPayrollServer/dist/
 /WeavingPayrollApp/dist/
+/WeavingPayrollRMIServer/nbproject/private/
+/WeavingPayrollRMIServer/build/
+/WeavingPayrollRMIServer/dist/

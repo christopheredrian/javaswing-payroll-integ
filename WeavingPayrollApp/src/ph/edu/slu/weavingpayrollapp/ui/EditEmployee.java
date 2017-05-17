@@ -8,7 +8,11 @@ package ph.edu.slu.weavingpayrollapp.ui;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneId;
+import static java.time.temporal.TemporalQueries.localDate;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,17 +25,40 @@ import weavingpayrollrmiserver.models.Position;
  *
  * @author angelrosemilo
  */
-public class AddEmployee extends javax.swing.JFrame {
+public class EditEmployee extends javax.swing.JFrame {
 
     private MainUIServer rmiServer = RMIController.getMainUIServer();
 
     /**
      * Creates new form EditEmployee
+     *
+     * @param employee
      */
-    public AddEmployee() {
+    public EditEmployee(Employee employee) {
         initComponents();
+        this.setVisible(true);
+        this.setEnabled(true);
         this.setAlwaysOnTop(true);
+        id.setText(employee.getId());
+        firstName.setText(employee.getFirstName());
+        lastName.setText(employee.getLastName());
+        middleName.setText(employee.getMiddleName());
+        address.setText(employee.getAddress());
+        phoneNumber.setText(employee.getPhoneNumber());
+        System.out.println(employee.getBirthday() + " ---- " + employee.getHireDate());
+//        Date bday = Date.from(employee.getBirthday().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        birthDate.setDate(Date.from(employee.getBirthday().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        hireDate.setDate(Date.from(employee.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        position.getEditor().setItem(employee.getPosition());
+        monthlyPay.setText(Double.toString(employee.getMonthlyPay()));
+        sss.setText(Double.toString(employee.getSssContribution()));
+        philHealth.setText(Double.toString(employee.getPhilhealthContribution()));
+        pagIbig.setText(Double.toString(employee.getPagIbigContribution()));
+        incomeTax.setText(Double.toString(employee.getIncomeTax()));
+// fn, ln, mn, address, phone, birthdate, title, month, sss, phil, pag, income
+    }
 
+    private EditEmployee() {
     }
 
     /**
@@ -186,7 +213,7 @@ public class AddEmployee extends javax.swing.JFrame {
         hireDate = new org.jdesktop.swingx.JXDatePicker();
         position = new javax.swing.JComboBox<>();
         jButton3 = new javax.swing.JButton();
-        jLabel21 = new javax.swing.JLabel();
+        headerLabel = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -894,6 +921,7 @@ public class AddEmployee extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
         setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -1041,6 +1069,8 @@ public class AddEmployee extends javax.swing.JFrame {
 
         jLabel52.setText("Last Name:");
 
+        id.setEditable(false);
+
         lastName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lastNameActionPerformed(evt);
@@ -1061,6 +1091,10 @@ public class AddEmployee extends javax.swing.JFrame {
 
         jLabel105.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel105.setText("Employee Information");
+
+        birthDate.setEditable(false);
+
+        hireDate.setEditable(false);
 
         position.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Supervisor", "Tailor", "Maintenace", "Manager", " " }));
 
@@ -1164,9 +1198,9 @@ public class AddEmployee extends javax.swing.JFrame {
             }
         });
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel21.setText("Add Employee");
+        headerLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        headerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        headerLabel.setText("Edit");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1186,14 +1220,14 @@ public class AddEmployee extends javax.swing.JFrame {
                             .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(335, 335, 335)
-                            .addComponent(jLabel21))))
+                            .addComponent(headerLabel))))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel21)
+                .addComponent(headerLabel)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1270,60 +1304,66 @@ public class AddEmployee extends javax.swing.JFrame {
             e.setIncomeTax(Double.parseDouble(incomeTax.getText()));
             rmiServer.addEditEmployee(e);
             System.out.println(rmiServer.getEmployees());
-            JOptionPane.showMessageDialog(this, "Added new Employee!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Edit success!", "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Invalid input!");
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(this, "Network error..");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Invalid input!");
         }
 
         System.out.println(e.toString());
 
 
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddEmployee().setVisible(true);
-            }
-        });
-    }
+//
+////    /**
+////     * @param args the command line arguments
+////     */
+////    public static void main(String args[]) {
+////        /* Set the Nimbus look and feel */
+////        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+////        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+////         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+////         */
+////        try {
+////            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+////                if ("windows".equals(info.getName())) {
+////                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+////                    break;
+////                }
+////            }
+////        } catch (ClassNotFoundException ex) {
+////            java.util.logging.Logger.getLogger(EditEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////        } catch (InstantiationException ex) {
+////            java.util.logging.Logger.getLogger(EditEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////        } catch (IllegalAccessException ex) {
+////            java.util.logging.Logger.getLogger(EditEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+////            java.util.logging.Logger.getLogger(EditEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////        }
+////        //</editor-fold>
+////        //</editor-fold>
+////        //</editor-fold>
+////        //</editor-fold>
+////
+////        /* Create and display the form */
+////        java.awt.EventQueue.invokeLater(new Runnable() {
+////            public void run() {
+////                new EditEmployee().setVisible(true);
+////            }
+////        });
+////    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField address;
     private org.jdesktop.swingx.JXDatePicker birthDate;
     private javax.swing.JTextField firstName;
+    private javax.swing.JLabel headerLabel;
     private org.jdesktop.swingx.JXDatePicker hireDate;
     private javax.swing.JTextField id;
     private javax.swing.JTextField incomeTax;
@@ -1364,7 +1404,6 @@ public class AddEmployee extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;

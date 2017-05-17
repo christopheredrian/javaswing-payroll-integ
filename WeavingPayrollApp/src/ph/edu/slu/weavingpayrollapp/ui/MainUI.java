@@ -5,21 +5,31 @@
  */
 package ph.edu.slu.weavingpayrollapp.ui;
 
+import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import ph.edu.slu.weavingpayrollapp.controllers.MainUIController;
-import ph.edu.slu.weavingpayrollserver.employees.Employee;
+import org.jdesktop.swingx.sort.RowFilters;
+import ph.edu.slu.weavingpayrollapp.controllers.RMIController;
+import weavingpayrollrmiserver.models.Employee;
+import weavingpayrollrmiserver.interfaces.MainUIServer;
 
 /**
  *
@@ -30,25 +40,20 @@ public class MainUI extends javax.swing.JFrame {
     /**
      * Creates new form MainUI
      */
+    private MainUIServer mainUIServer = RMIController.getMainUIServer();
     private boolean adminActive = false;
 
     public MainUI() {
         initComponents();
-        adminPane.setVisible(false);
-        table.getModel();
-        List<Employee> employees = MainUIController.getAllEmployees();
-
-        TableModel tm = new DefaultTableModel(employees.size(), 3);
-
-        for (int i = 0; i < employees.size(); i++) {
-            System.out.println(employees.get(i).getId());
-            tm.setValueAt(employees.get(i).getId(), i, 0);
-            tm.setValueAt(employees.get(i).getFirstName(), i, 1);
-            tm.setValueAt(employees.get(i).getLastName(), i, 2);
-        }
-        table.setModel(tm);
-
+        clockInBtn.setVisible(false);
+        clockOutBnt.setVisible(false);
+//        adminPane.setVisible(false);
         runTimer();
+        try {
+            this.syncTable();
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void runTimer() {
@@ -65,6 +70,32 @@ public class MainUI extends javax.swing.JFrame {
         timer.scheduleAtFixedRate(timerTask, 30, 1000);//this line starts the timer at t
     }
 
+    protected void syncTable() throws RemoteException {
+        table.getModel();
+        DefaultTableModel tm = (DefaultTableModel) table.getModel();
+        int counter = 0;
+        HashMap<String, Employee> employees = mainUIServer.getEmployees();
+
+        tm.setNumRows(employees.size());
+
+        for (Map.Entry<String, Employee> entry : employees.entrySet()) {
+            String key = entry.getKey();
+            Employee value = entry.getValue();
+            if (value.isActive()) {
+                tm.setValueAt(value.getId(), counter, 0);
+                tm.setValueAt(value.getFirstName(), counter, 1);
+                tm.setValueAt(value.getLastName(), counter, 2);
+                tm.setValueAt(value.isClockedIn() ? "In" : "Out", counter, 3);
+
+                counter++;
+            }
+        }
+        tm.setNumRows(counter);
+        counter = 0;
+
+        table.setModel(tm);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,10 +106,8 @@ public class MainUI extends javax.swing.JFrame {
     private void initComponents() {
 
         clockOutBtn = new javax.swing.JPanel();
-        tableScrollPane = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
         clockInBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        clockOutBnt = new javax.swing.JButton();
         adminPane = new javax.swing.JPanel();
         addBtn = new javax.swing.JButton();
         editBtn = new javax.swing.JButton();
@@ -90,27 +119,16 @@ public class MainUI extends javax.swing.JFrame {
         checkHoursBtn = new javax.swing.JButton();
         activateAdminBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jXButton1 = new org.jdesktop.swingx.JXButton();
         currentTimeField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new org.jdesktop.swingx.JXTable();
+        jXMonthView1 = new org.jdesktop.swingx.JXMonthView();
+        searchField = new org.jdesktop.swingx.JXSearchField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        clockOutBtn.setBackground(new java.awt.Color(34, 204, 99));
-
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "ID", "NAME"
-            }
-        ));
-        tableScrollPane.setViewportView(table);
-        if (table.getColumnModel().getColumnCount() > 0) {
-            table.getColumnModel().getColumn(1).setResizable(false);
-        }
+        clockOutBtn.setBackground(new java.awt.Color(255, 255, 255));
 
         clockInBtn.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         clockInBtn.setText("Clock In");
@@ -121,20 +139,25 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jButton2.setText("Clock Out");
-        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        clockOutBnt.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        clockOutBnt.setText("Clock Out");
+        clockOutBnt.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        clockOutBnt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                clockOutBntActionPerformed(evt);
             }
         });
 
-        adminPane.setBackground(new java.awt.Color(77, 77, 51));
+        adminPane.setBackground(new java.awt.Color(255, 255, 255));
 
         addBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         addBtn.setText("Add Employee");
         addBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBtnActionPerformed(evt);
+            }
+        });
 
         editBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         editBtn.setText("Edit Employee");
@@ -148,10 +171,20 @@ public class MainUI extends javax.swing.JFrame {
         deActivateBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         deActivateBtn.setText("De-Activate Employee");
         deActivateBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        deActivateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deActivateBtnActionPerformed(evt);
+            }
+        });
 
         reActivateBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         reActivateBtn.setText("Re-Activate Employee");
         reActivateBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        reActivateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reActivateBtnActionPerformed(evt);
+            }
+        });
 
         employeeSummaryBtn.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         employeeSummaryBtn.setText("Employee Summary");
@@ -172,13 +205,15 @@ public class MainUI extends javax.swing.JFrame {
             adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(adminPaneLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(reActivateBtn)
-                    .addComponent(deActivateBtn))
+                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(editBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                    .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(deActivateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(adminPaneLayout.createSequentialGroup()
+                        .addComponent(reActivateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(37, 37, 37)
                 .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(payrollBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -189,19 +224,19 @@ public class MainUI extends javax.swing.JFrame {
             adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(adminPaneLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addBtn)
+                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deActivateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(employeeSummaryBtn))
+                    .addComponent(employeeSummaryBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(payrollBtn)
-                    .addComponent(reActivateBtn)
-                    .addComponent(editBtn))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(adminPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reActivateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(payrollBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        jPanel4.setBackground(new java.awt.Color(77, 77, 51));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         checkHoursBtn.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         checkHoursBtn.setText("Check My Hours");
@@ -225,37 +260,173 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
+        jXButton1.setText("Sync");
+        jXButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jXButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jXButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(checkHoursBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(activateAdminBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(checkHoursBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                    .addComponent(jXButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(activateAdminBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(checkHoursBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(activateAdminBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(checkHoursBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(activateAdminBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jXButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        currentTimeField.setBackground(new java.awt.Color(34, 204, 99));
         currentTimeField.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         currentTimeField.setText("7:41");
         currentTimeField.setBorder(null);
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Id", "First Name", "Last Name", "Clocked In"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.setEditable(false);
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(table);
+
+        searchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout clockOutBtnLayout = new javax.swing.GroupLayout(clockOutBtn);
         clockOutBtn.setLayout(clockOutBtnLayout);
@@ -263,44 +434,54 @@ public class MainUI extends javax.swing.JFrame {
             clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(clockOutBtnLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                    .addComponent(searchField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addComponent(adminPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(54, Short.MAX_VALUE))
-                    .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(87, 87, 87)
                         .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(currentTimeField)
                             .addGroup(clockOutBtnLayout.createSequentialGroup()
-                                .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(adminPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 8, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, clockOutBtnLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jXMonthView1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, clockOutBtnLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(95, 95, 95))))
+                                .addComponent(currentTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(clockOutBtnLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(clockOutBnt, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(139, 139, 139))))
         );
         clockOutBtnLayout.setVerticalGroup(
             clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(clockOutBtnLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
                         .addComponent(adminPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addComponent(currentTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(clockOutBtnLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(clockOutBtnLayout.createSequentialGroup()
+                                .addComponent(currentTimeField)
+                                .addGap(18, 18, 18)
+                                .addComponent(jXMonthView1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(clockOutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(clockOutBnt, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(clockInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
 
@@ -319,12 +500,13 @@ public class MainUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clockInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clockInBtnActionPerformed
-        // TODO add your handling code here:
+
+
     }//GEN-LAST:event_clockInBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void clockOutBntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clockOutBntActionPerformed
+
+    }//GEN-LAST:event_clockOutBntActionPerformed
 
     private void activateAdminBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activateAdminBtnActionPerformed
         if (!adminActive) {
@@ -332,16 +514,21 @@ public class MainUI extends javax.swing.JFrame {
             int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (okCxl == JOptionPane.OK_OPTION) {
-                String passwordStr = new String(pf.getPassword());
-                if (MainUIController.activateAdmin(passwordStr)) {
-                    adminPane.setVisible(true);
-                    adminActive = true;
-                    activateAdminBtn.setText("Deactivate Admin");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Wrong Password!");
+                try {
+                    String passwordStr = new String(pf.getPassword());
+                    if (mainUIServer.authenticate(passwordStr)) {
+                        adminPane.setVisible(true);
+                        adminActive = true;
+                        activateAdminBtn.setText("Deactivate Admin");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Wrong Password!");
+                        activateAdminBtn.doClick();
+                    }
+                    String password = new String(pf.getPassword());
+                    System.err.println("You entered: " + password);
+                } catch (RemoteException ex) {
+                    System.err.println(ex.getMessage());
                 }
-                String password = new String(pf.getPassword());
-                System.err.println("You entered: " + password);
             }
         } else {
             // is admin
@@ -357,12 +544,95 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_employeeSummaryBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            int selected = table.getSelectedRow();
+            String id = (String) table.getModel().getValueAt(selected, 0);
+            Employee e = mainUIServer.getEmployees().get(id);
+            new EditEmployee(e).setVisible(true);
+            if (selected > -1) {
+            } else {
+
+            }
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "No row was selected", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+        table.setRowFilter(RowFilters.regexFilter(Pattern.compile(searchField.getText())));
+
+    }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void jXButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXButton1ActionPerformed
+        try {
+            syncTable();
+        } catch (RemoteException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_jXButton1ActionPerformed
+
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        new AddEmployee().setVisible(true);
+    }//GEN-LAST:event_addBtnActionPerformed
+
+    private void deActivateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deActivateBtnActionPerformed
+        try {
+            int selected = table.getSelectedRow();
+            String id = (String) table.getModel().getValueAt(selected, 0);
+            Employee e = mainUIServer.getEmployees().get(id);
+            e.setActive(false);
+            if (selected > -1) {
+            } else {
+            }
+            mainUIServer.addEditEmployee(e);
+            JOptionPane.showMessageDialog(this, "Employee Deactivated..", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "No row was selected", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_deActivateBtnActionPerformed
+
+    private void reActivateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reActivateBtnActionPerformed
+        try {
+            new ReactivateEmployee().setVisible(true);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_reActivateBtnActionPerformed
+
+    private void tableClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClicked
+        try {
+            int selected = table.getSelectedRow();
+            String id = (String) table.getModel().getValueAt(selected, 0);
+            HashMap<String, Employee> employees = mainUIServer.getEmployees();
+            System.out.println(id);
+            if (selected > -1) {
+                if (employees.get(id).isClockedIn()) {
+                    clockInBtn.setVisible(false);
+                    clockOutBnt.setVisible(true);
+                } else if (!employees.get(id).isClockedIn()) {
+                    clockInBtn.setVisible(true);
+                    clockOutBnt.setVisible(false);
+                } else {
+                    clockInBtn.setVisible(false);
+                    clockOutBnt.setVisible(false);
+                }
+            } else {
+                clockInBtn.setVisible(false);
+                clockOutBnt.setVisible(false);
+            }
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_tableClicked
 
     /**
      * @param args the command line arguments
@@ -405,17 +675,20 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JPanel adminPane;
     private javax.swing.JButton checkHoursBtn;
     private javax.swing.JButton clockInBtn;
+    private javax.swing.JButton clockOutBnt;
     private javax.swing.JPanel clockOutBtn;
     private javax.swing.JTextField currentTimeField;
     private javax.swing.JButton deActivateBtn;
     private javax.swing.JButton editBtn;
     private javax.swing.JButton employeeSummaryBtn;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private org.jdesktop.swingx.JXButton jXButton1;
+    private org.jdesktop.swingx.JXMonthView jXMonthView1;
     private javax.swing.JButton payrollBtn;
     private javax.swing.JButton reActivateBtn;
-    private javax.swing.JTable table;
-    private javax.swing.JScrollPane tableScrollPane;
+    private org.jdesktop.swingx.JXSearchField searchField;
+    private org.jdesktop.swingx.JXTable table;
     // End of variables declaration//GEN-END:variables
 }

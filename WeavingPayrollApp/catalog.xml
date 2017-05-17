@@ -4,4 +4,6 @@
     <system systemId="http://localhost:8080/WeavingPayrollServer/AdminService?xsd=1" uri="xml-resources/web-service-references/AdminService/wsdl/localhost_8080/WeavingPayrollServer/AdminService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/WeavingPayrollServer/EmployeeService?wsdl" uri="xml-resources/web-service-references/EmployeeService/wsdl/localhost_8080/WeavingPayrollServer/EmployeeService.wsdl"/>
     <system systemId="http://localhost:8080/WeavingPayrollServer/EmployeeService?xsd=1" uri="xml-resources/web-service-references/EmployeeService/wsdl/localhost_8080/WeavingPayrollServer/EmployeeService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/WeavingPayrollServer/MainService?wsdl" uri="xml-resources/web-service-references/MainService/wsdl/localhost_8080/WeavingPayrollServer/MainService.wsdl"/>
+    <system systemId="http://localhost:8080/WeavingPayrollServer/MainService?xsd=1" uri="xml-resources/web-service-references/MainService/wsdl/localhost_8080/WeavingPayrollServer/MainService.xsd_1.xsd"/>
 </catalog>
